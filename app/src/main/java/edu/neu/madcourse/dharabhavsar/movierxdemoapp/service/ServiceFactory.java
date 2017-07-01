@@ -18,6 +18,7 @@ public class ServiceFactory {
         final Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .build();
+
         T service = restAdapter.create(tClass);
 
         return service;

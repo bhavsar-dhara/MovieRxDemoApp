@@ -11,13 +11,14 @@ import edu.neu.madcourse.dharabhavsar.movierxdemoapp.R;
 public class MainSplashActivity extends AppCompatActivity {
 
     private static final String TAG = MainSplashActivity.class.getSimpleName();
-    private static final int LOADING_TIME = 500;
+    private static final int LOADING_TIME = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate: " + TAG);
         setContentView(R.layout.activity_main_splash);
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
