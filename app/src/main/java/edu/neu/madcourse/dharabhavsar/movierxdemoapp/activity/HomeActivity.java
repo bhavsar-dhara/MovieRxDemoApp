@@ -10,14 +10,12 @@ import android.view.View;
 
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.R;
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.model.Movies;
+import edu.neu.madcourse.dharabhavsar.movierxdemoapp.service.ServiceFactory;
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.service.TMDbService;
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.utils.Constant;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -30,13 +28,8 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.SERVICE_ENDPOINT)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        TMDbService tmDbService = ServiceFactory.createRetrofitService(TMDbService.class, Constant.SERVICE_ENDPOINT);
 
-        TMDbService tmDbService = retrofit.create(TMDbService.class);
         Observable<Movies> discover = tmDbService.getMovies("01edd08f251d3f0b1c6789182e3214e1");
 
         discover.subscribeOn(Schedulers.newThread())

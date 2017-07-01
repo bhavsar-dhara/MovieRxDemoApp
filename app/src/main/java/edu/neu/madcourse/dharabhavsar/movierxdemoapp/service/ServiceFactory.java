@@ -1,6 +1,8 @@
 package edu.neu.madcourse.dharabhavsar.movierxdemoapp.service;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Dhara on 3/15/2017.
@@ -15,12 +17,12 @@ public class ServiceFactory {
      * @return retrofit service with defined baseUrl
      */
     public static <T> T createRetrofitService(final Class<T> tClass, final String baseUrl) {
-        final Retrofit restAdapter = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        T service = restAdapter.create(tClass);
-
-        return service;
+        return retrofit.create(tClass);
     }
 }
