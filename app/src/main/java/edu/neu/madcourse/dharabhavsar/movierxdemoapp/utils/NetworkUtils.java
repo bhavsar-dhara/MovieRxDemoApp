@@ -24,7 +24,6 @@ public class NetworkUtils {
 
     public static NetworkListener networkListener;
     public static boolean isMonitoring = false;
-
     public static BroadcastReceiver receiver = null;
 
     public static synchronized NetworkUtils getInstance() {
