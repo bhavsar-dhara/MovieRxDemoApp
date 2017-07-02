@@ -23,8 +23,9 @@ public class NetworkUtils {
     private static NetworkUtils mInstance;
     public static boolean isMonitoring = false;
     static Snackbar snackbar;
+    public static NetworkListener networkListener;
 
-    public static NetworkUtils getmInstance() {
+    public static synchronized NetworkUtils getInstance() {
         if(mInstance == null) {
             mInstance = new NetworkUtils();
         }
@@ -37,11 +38,15 @@ public class NetworkUtils {
             isMonitoring = true;
             isConnected = isConnected(context);
             Log.e(TAG, "onReceive: " + isConnected);
+            if (networkListener != null) {
+                networkListener.onNetworkConnectionChanged(isConnected);
+            }
         }
     };
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
