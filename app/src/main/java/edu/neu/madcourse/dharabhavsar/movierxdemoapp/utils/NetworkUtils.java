@@ -19,30 +19,31 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private static boolean isConnected = false;
     private static NetworkUtils mInstance;
-    public static boolean isMonitoring = false;
-    static Snackbar snackbar;
+    private static Snackbar snackbar;
+
     public static NetworkListener networkListener;
+    public static boolean isMonitoring = false;
+
+    public static BroadcastReceiver receiver = null;
 
     public static synchronized NetworkUtils getInstance() {
         if(mInstance == null) {
             mInstance = new NetworkUtils();
+            isMonitoring = true;
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    boolean isConnected = isConnected(context);
+                    Log.e(TAG, "onReceive: " + isConnected);
+                    if (networkListener != null) {
+                        networkListener.onNetworkConnectionChanged(isConnected);
+                    }
+                }
+            };
         }
         return mInstance;
     }
-
-    public BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            isMonitoring = true;
-            isConnected = isConnected(context);
-            Log.e(TAG, "onReceive: " + isConnected);
-            if (networkListener != null) {
-                networkListener.onNetworkConnectionChanged(isConnected);
-            }
-        }
-    };
 
     public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager)

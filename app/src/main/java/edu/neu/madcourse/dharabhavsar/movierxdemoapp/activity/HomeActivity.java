@@ -49,10 +49,15 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        if (NetworkUtils.isMonitoring) {
-            this.getApplicationContext().unregisterReceiver(NetworkUtils.getInstance().receiver);
-            NetworkUtils.isMonitoring = false;
+        try {
+            if (NetworkUtils.isMonitoring) {
+                this.getApplicationContext().unregisterReceiver(NetworkUtils.getInstance().receiver);
+                NetworkUtils.isMonitoring = false;
+            }
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "onPause: IllegalArgumentException: ", e);
         }
+
     }
 
     @Override
