@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.utils.NetworkListener;
 import edu.neu.madcourse.dharabhavsar.movierxdemoapp.utils.NetworkUtils;
 
@@ -23,6 +25,14 @@ public class MovieRxDemoApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+
+        // Normal app init code...
         mInstance = this;
 
         getApplicationContext().registerReceiver(NetworkUtils.getInstance().receiver,

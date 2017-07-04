@@ -14,4 +14,7 @@ public interface TMDbService {
 
     @GET(Constant.DISCOVER_MOVIE)
     Observable<Movies> getMovies(@Query("api_key") String apiKey);
+
+    @GET(Constant.DISCOVER_MOVIE)
+    Observable<Movies> getMovies(@Query("api_key") String apiKey, @Query("page") int pageNo);
 }
